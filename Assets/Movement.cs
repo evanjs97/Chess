@@ -7,6 +7,7 @@ public class Movement : MonoBehaviour {
     private bool clicked = false;
     private bool willMove = false;
     private Transform moveT;
+    private bool moving = false;
     // Use this for initialization
     void Start () {
         rend = GetComponent<Renderer>();
@@ -14,7 +15,7 @@ public class Movement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !moving)
         {
 
             RaycastHit hit;
@@ -43,12 +44,18 @@ public class Movement : MonoBehaviour {
 
         if (gameObject.transform.position.x != moveT.position.x)
         {
+            moving = true;
             Vector3 moveX = new Vector3(moveT.position.x, .5f, gameObject.transform.position.z);
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, moveX, Time.deltaTime);
         }else if (gameObject.transform.position.z != moveT.position.z)
         {
+            moving = true;
             Vector3 moveZ = new Vector3(gameObject.transform.position.x, .5f, moveT.position.z);
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, moveZ, Time.deltaTime);
+        }else
+        {
+            willMove = false;
+            moving = false;
         }
     }
 }
